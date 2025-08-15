@@ -1,0 +1,86 @@
+<% layout('/layouts/boilerplate') %>
+
+<body>
+    <h1>Create New Listing</h1>
+    <form method="post" action="/listings" enctype="multipart/form-data" class="needs-validation" novalidate>
+        
+        <input class="form-control" type="text" placeholder="Enter title" name="listing[title]" required />
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <br/>
+
+        <input class="form-control" type="file" name="listing[image]" required />
+            <div class="invalid-feedback">
+                Please enter the image.
+            </div>
+        <br/>
+
+        <textarea class="form-control" name="listing[description]" placeholder="Enter description" required></textarea>
+        <div class="invalid-feedback">
+            Please enter the description.
+        </div>        
+        <br/>
+
+
+
+        <input class="form-control" type="number" placeholder="Enter price" name="listing[price]" required />
+        <div class="invalid-feedback">
+            Please enter the price.
+        </div>
+        <br/>
+
+        <input class="form-control" type="text" placeholder="Enter location" name="listing[location]" required />
+        <div class="invalid-feedback">
+            Please enter the location.
+        </div>        
+        <br/>
+
+        <input class="form-control" type="text" placeholder="Enter country" name="listing[country]" required />
+        <div class="invalid-feedback">
+            Please enter the country.
+        </div>
+        <br/>        
+
+               
+        <input class="form-control" type="number" step="any" id="latitude" placeholder="Latitude" name="listing[Mapcoordinates][latitude]" required />
+        <div class="invalid-feedback">Please enter latitude.</div>
+        <br/>
+
+        <input class="form-control" type="number" step="any" id="longitude" placeholder="Longitude" name="listing[Mapcoordinates][longitude]" required />
+        <div class="invalid-feedback">Please enter longitude.</div>
+        <br/>
+
+        <div id="map" style="height: 400px; margin-bottom: 15px;"></div>
+
+        <button class="btn btn-outline-success w-25 mt-4" type="submit">ADD+</button>
+    </form>
+</body>
+<script src="/js/script.js"></script>
+<script>
+    var defaultLat = 51.5;
+    var defaultLng = -0.09;
+
+    var map = L.map('map').setView([defaultLat, defaultLng], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+
+    marker.on('dragend', function (e) {
+        var coords = marker.getLatLng();
+        document.getElementById('latitude').value = coords.lat.toFixed(6);
+        document.getElementById('longitude').value = coords.lng.toFixed(6);
+    });
+
+    map.on('click', function (e) {
+        var lat = e.latlng.lat.toFixed(6);
+        var lng = e.latlng.lng.toFixed(6);
+        marker.setLatLng(e.latlng);
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
+    });
+</script>

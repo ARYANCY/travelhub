@@ -1,0 +1,38 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+    <% if (success && success.length) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+    <% } %>
+    <% if (error && error.length) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+    <% } %>
+
+    <h3 class="mb-4">Search Results for "<%= query %>"</h3>
+    <form action="/" method="get" class="mb-4">
+        <button class="btn btn-outline-success w-25" type="submit">Back to Home</button>
+    </form>
+
+    <% if (results.length === 0) { %>
+        <p>No listings found.</p>
+    <% } else { %>
+        <div class="card-grid">
+            <% for (let l of results) { %>  
+            <div>
+                <a href="/listings/show/<%= l.id %>">
+                    <img class="card-img-top rounded mx-auto d-block" src="<%= l.image.url %>" alt="image"/>
+                </a>
+                <div class="card-body" style="display: flex;flex-direction: column;">
+                    <h6 class="card-title"><%= l.title %></h6>
+                    <p class="card-text">&#8377 <%= l.price.toLocaleString("en-IN") %>/night</p>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    <% } %>
+</body>

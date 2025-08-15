@@ -1,0 +1,137 @@
+<% layout('/layouts/boilerplate') %>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+ integrity="sha256-sA+4/3q1p7wD+QKOG65V8a+SEN4YF+VJt/9g+R4hLkA=" crossorigin=""/>
+
+<body>
+    <h1>edit listings</h1>
+    <form method="post" action="/listings/<%= editListing.id %>?_method=Put" enctype="multipart/form-data" class="needs-validation" novalidate>
+    <input type="text" name="listing[title]" class="form-control" value="<%= editListing.title %>" required/>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <br/>
+        <textarea name="listing[description]" class="form-control" required><%= editListing.description %></textarea>
+        <div class="invalid-feedback">
+            Please enter the description.
+        </div>
+        <br/>
+        
+        <div class="image-preview mb-3">
+            <p>IMAGE PREVIEW</p>
+            <img src="<%= editListing.image.url %>" alt="Current Image" class="img-thumbnail" style="max-width: 200px;">
+        </div>
+        <input class="form-control" type="file" name="listing[image]" value="<%= editListing.image.url %>" />
+            <div class="invalid-feedback">
+                Please enter the image.
+            </div>
+        <br/>
+
+        <input type="number" class="form-control" value="<%= editListing.price %>" name="listing[price]" required/>
+        <div class="invalid-feedback">
+            Please enter the price.
+        </div>
+        <br/>
+        <input type="text" class="form-control" value="<%= editListing.location %>" name="listing[location]" required/>
+        <div class="invalid-feedback">
+            Please enter the location.
+        </div>
+        <br/>
+        <input type="text" class="form-control" value="<%= editListing.country %>" name="listing[country]" required/>
+        <div class="invalid-feedback">
+            Please enter the country.
+        </div>
+        <br/>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Location Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="lat" class="form-label">Latitude</label>
+                        <input type="number" step="any" class="form-control" 
+                            id="lat" name="listing[Mapcoordinates][latitude]" 
+                            value="<%= editListing.Mapcoordinates?.latitude || '' %>" 
+                            placeholder="Enter Latitude" required>
+                        <div class="invalid-feedback">Enter valid latitude.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lng" class="form-label">Longitude</label>
+                        <input type="number" step="any" class="form-control" 
+                            id="lng" name="listing[Mapcoordinates][longitude]" 
+                            value="<%= editListing.Mapcoordinates?.longitude || '' %>" 
+                            placeholder="Enter Longitude" required>
+                        <div class="invalid-feedback">Enter valid longitude.</div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <label class="form-label">Select Location on Map</label>
+                    <div id="map" style="height: 300px; border-radius: 8px; border: 1px solid #ddd;"></div>
+                    <small class="text-muted d-block mt-2">Click on the map to set coordinates.</small>
+                </div>
+            </div>
+        </div>
+
+
+        <button class="btn btn-outline-success w-25 mt-4"  type="submit">ADD+</button>
+    </form>
+</body>
+<script src="/js/script.js"></script>
+
+<script>
+(() => {
+  'use strict';
+
+  // Enable Bootstrap Validation
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+
+  // Default map center from existing listing or fallback
+  const defaultLat = '<%= editListing.latitude || 51.505 %>';
+  const defaultLng = '<%= editListing.longitude || -0.09 %>';
+
+  const map = L.map('map').setView([defaultLat, defaultLng], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  let marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+
+
+  marker.on('dragend', function(e) {
+    const { lat, lng } = marker.getLatLng();
+    document.getElementById('lat').value = lat.toFixed(6);
+    document.getElementById('lng').value = lng.toFixed(6);
+  });
+
+
+  map.on('click', function(e) {
+    marker.setLatLng(e.latlng);
+    document.getElementById('lat').value = e.latlng.lat.toFixed(6);
+    document.getElementById('lng').value = e.latlng.lng.toFixed(6);
+  });
+
+
+  document.getElementById('lat').addEventListener('input', updateMarker);
+  document.getElementById('lng').addEventListener('input', updateMarker);
+
+  function updateMarker() {
+    const lat = parseFloat(document.getElementById('lat').value);
+    const lng = parseFloat(document.getElementById('lng').value);
+    if (!isNaN(lat) && !isNaN(lng)) {
+      marker.setLatLng([lat, lng]);
+      map.setView([lat, lng]);
+    }
+  }
+})();
+</script>
