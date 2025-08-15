@@ -59,7 +59,7 @@ SESSION_SECRET=<Your Session Secret>
   ```bash
   npm run dev
   ```
--For normal start:
+- For normal start:
   ```bash
   npm start
   ```
