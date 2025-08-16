@@ -13,9 +13,15 @@ body {
     height: 200px;
     object-fit: cover;
 }
-
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
 .rating {
   display: flex;
+  position: relative;
   flex-direction: row-reverse;
   gap: 0.3rem;
   --stroke: #666;
@@ -212,11 +218,17 @@ body {
 
 
 footer {
-    background-color: #222;
-    color: white;
+    background-color: #222;;
     padding: 20px;
     text-align: center;
+    margin-top: 20px;
 
+}
+.about-this-project {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-style: bold;
+    color: azure;
 }
 footer ul {
     padding: 0;
@@ -232,6 +244,7 @@ footer ul {
 }
 
 .f-info svg {
+    color: snow;
     margin: 0 10px;
     cursor: pointer;
     transition: transform 0.2s, fill 0.2s;
@@ -278,6 +291,40 @@ footer ul {
         padding: 1px;
     }
     .card-grid {
-        grid-template-columns: repeat(1, 1fr); 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .search-container {
+        width: 100%;
+    }
+    .search-inp {
+        height: 30px;
+        width: 100%;
+    }
+    .search-btn {
+        width: 40px;
+        height: 40px;
+        right: 4px;
+    }
+    .card img,
+    .card-img-top {
+        height: 150px;
+    }
+    .card-text {
+        font-size: 1.4rem;
+
+    }
+    .card-title {
+        font-size: 0.9rem;
+        left: 0px;
+    }
+    .card-body {
+        padding: 0;
+    }
+    .navbar-brand {
+        display: none;
+    }
+    .author{
+        font-size: 1.2rem;
+        right: 0px;
     }
 }

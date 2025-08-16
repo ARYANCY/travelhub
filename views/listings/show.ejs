@@ -18,18 +18,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
     </div>
     <% } %>
-
-    <h1>DETAILS LISTINGS</h1>
     <form action="/" method="get">
-        <button class="btn btn-outline-success w-25 mb-4" type="submit">HOME</button>
+        <button class="btn btn-outline-success w-100 mb-4" type="submit">HOME</button>
     </form>
-    <div class="card-grid" style="display: flex;flex-direction: column;">
+    <div class="show-card-grid" style="display: flex;flex-direction: column;">
                 <img class="card-img-top rounded mx-auto d-block" src="<%= showListings.image.url %>" alt="Listing Image"/>
                 <div class="card-body" >
-                        <h4 class="card-title"><%= showListings.title %></h4>
-                        <p class="card-text"><%= showListings.description %></p>
-                        <p class="card-text">&#8377 <%= showListings.price.toLocaleString("en-IN") %></p>
-                        <p class="card-text">loc: <%= showListings.location %> , <%= showListings.country %></p>
+                        <h4 class="card-title my-4 fs-3"><%= showListings.title %></h4>
+                        <p class="card-text fs-6"><%= showListings.description %></p>
+                        <p class="card-text fs-5">&#8377 <%= showListings.price.toLocaleString("en-IN") %></p>
+                        <p class="card-text my-0 fs-5"><%= showListings.location %> , <%= showListings.country %></p>
                         <% if(currentUser && currentUser._id.equals(showListings.owner._id)){ %>
                         <div style="display: flex;flex-direction: row;justify-content: space-between;">
                             <form action="/listings/<%=  showListings.id %>/edit" method="get">
@@ -45,7 +43,7 @@
                         <div class="Review">
                             <h4>Leave a Review</h4>
                             <form action="/listings/<%=showListings.id %>/reviews" method="post" class="needs-validation" novalidate >
-                            <div class="mb-3 mt-3">
+                            <div class="mb-3 mt-3 start-0">
                                 <label for="rating" class="form-label">Rating</label>
                                 <div class="rating">
                                     <input type="radio" id="star-5" name="review[rating]" value="5">
@@ -88,7 +86,7 @@
 
                                     <label for="review" class="form-label">Comment</label>
                                     <div class="rev">
-                                        <textarea class="form-control" name="review[comment]" id="comment" cols="50" rows="10" required></textarea>
+                                        <textarea class="form-control" name="review[comment]" id="comment" cols="50" rows="2" required></textarea>
                                               <div class="invalid-feedback">
                                                     Please enter a valid review
                                                 </div> 
@@ -120,7 +118,7 @@
                             %>
                             <% for(let i=1; i<=5; i++) { %>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-                                class="me-1" width="24" height="24" 
+                                class="me-1" width="24" height="23" 
                                 fill="<%= i <= avgRating ? '#eecb08' : '#e0e0e0' %>">
                                 <path d="M17.56 21a1 1 0 0 1-.46-.11L12 18.22l-5.1 2.67a1 1 0 0 1-1.45-1.06l1-5.63-4.12-4a1 1 0 0 1-.25-1 1 1 0 0 1 .81-.68l5.7-.83 2.51-5.13a1 1 0 0 1 1.8 0l2.54 5.12 5.7.83a1 1 0 0 1 .81.68 1 1 0 0 1-.25 1l-4.12 4 1 5.63a1 1 0 0 1-.4 1 1 1 0 0 1-.62.18z"></path>
                             </svg>
@@ -176,10 +174,9 @@
                 <%= review.comment || "No comment provided." %>
                 </p>
 
-                <div class="d-flex justify-content-between align-items-center">
-                <span class="text-muted fw-medium">
-                    — <%= review.author ? review.author.username : "Anonymous" %>
-                </span>
+                <div class="text-end">
+
+                   <p class="author card-text text-secondary mb-3"> - <%= review.author.username %></p>
                 <% if(currentUser && review.author && currentUser._id.equals(review.author._id)) { %>
                     <form method="post" action="/listings/<%= showListings.id %>/reviews/<%= review._id %>?_method=DELETE" class="m-0">
                     <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -199,7 +196,7 @@
     <div class="map-section">
         <h3>Where you'll be</h3>
         <p><%= showListings.location %> , <%= showListings.country %></p>
-        <div id="map" style="height: 400px;border-radius: 20px; margin-bottom: 30px;"></div>
+        <div id="map" style="height: 341px;border-radius: 32px;margin-bottom: 30px;position: relative;"></div>
     </div>
      
 </body>
