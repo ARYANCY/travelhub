@@ -14,14 +14,14 @@
     <% } %>
 
     <h3 class="mb-4">Search Results for "<%= query %>"</h3>
-    <form action="/" method="get" class="mb-4">
-        <button class="btn btn-outline-success w-25" type="submit">Back to Home</button>
+    <form action="/" method="get" class="mb-4 ">
+        <button class="btn btn-outline-success w-100" type="submit">Back to Home</button>
     </form>
 
     <% if (results.length === 0) { %>
-        <p>No listings found.</p>
+        <p class="my-5">No listings found for '<%= query %>'</p>
     <% } else { %>
-        <div class="card-grid">
+        <div class="card-grid ">
             <% for (let l of results) { %>  
             <div>
                 <a href="/listings/show/<%= l.id %>">
